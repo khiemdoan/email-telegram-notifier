@@ -1,0 +1,7 @@
+Folder: {{ folder }}
+
+{% for email in emails %}
+Subject: {{ email.subject }}
+From: {{ email.from }}
+To: {{ email.to }}
+{% endfor %}
