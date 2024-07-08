@@ -2,7 +2,7 @@ name: Update emails
 
 on:
   schedule:
-    - cron: 0 0,6,12 * * *  # 8h, 14h, 20h in Vietnam
+    - cron: 0 1,2,3,4,5,7,8,9,10,14 * * *  # 8h, 9h, 10h, 11h, 12h, 14h, 15h, 16h, 17h, 21h in Vietnam
 
 jobs:
   update-data:
@@ -19,9 +19,9 @@ jobs:
             ./pdm.lock
 
       - name: Install dependencies
-        run: pdm install
+        run: pdm sync
 
-      - name: Update
+      - name: Update emails
         env:
           IMAP_HOST: ${{ secrets.IMAP_HOST }}
           IMAP_PORT: ${{ secrets.IMAP_PORT }}
@@ -29,4 +29,4 @@ jobs:
           IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python src/main.py
+        run: pdm run src/main.py
