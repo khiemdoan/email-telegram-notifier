@@ -2,7 +2,8 @@ name: Update emails
 
 on:
   schedule:
-    - cron: 0 1,2,3,4,5,7,8,9,10,14 * * *  # 8h, 9h, 10h, 11h, 12h, 14h, 15h, 16h, 17h, 21h in Vietnam
+    - cron: 0 1-5,7-10,14 * * 1-5   # 8h, 9h, 10h, 11h, 12h, 14h, 15h, 16h, 17h, 21h on weekdays in Vietnam
+    - cron: 0 2,8 * * 6,0           # 9h, 15h on weekends in Vietnam
 
 jobs:
   update-data:
