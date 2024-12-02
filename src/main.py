@@ -9,8 +9,8 @@ from imapclient.response_types import Address, Envelope
 from loguru import logger
 
 from settings import ImapSettings
-from telegram import send_message
-from templates import render
+from telegram import Telegram
+from templates import Render
 
 
 def decode_subject(subject: bytes) -> str:
@@ -55,11 +55,14 @@ def check_folder(client: IMAPClient, folder: str):
         'folder': folder,
         'emails': emails,
     }
+    render = Render()
     message = render('message.j2', context).strip()
-    try:
-        send_message(message)
-    except Exception as ex:
-        logger.error(ex)
+
+    with Telegram() as tele:
+        try:
+            tele.send_message(message)
+        except Exception as ex:
+            logger.error(ex)
 
 
 if __name__ == '__main__':
