@@ -1,7 +1,14 @@
-Folder: {{ folder }}
+🗂️ Folder: {{ folder }}, {{ total }} emails
 
 {% for email in emails %}
-Subject: {{ email.subject }}
-From: {{ email.from }}
-To: {{ email.to }}
+✉️ Subject: {{ email.subject }}
+📅 Time: {{ email.date }}
+👤 From: {{ email.from }}
+📬 To: {{ email.to }}
+{%- if email.cc %}
+📧 CC: {{ email.cc }}
+{% endif %}
+{%- if email.bcc %}
+👁️ BCC: {{ email.bcc }}
+{% endif %}
 {% endfor %}
