@@ -6,12 +6,23 @@ import re
 from typing import Any, Literal, Self
 
 from httpx import Client
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from settings import TelegramSettings
+
+class TelegramSettings(BaseSettings):
+    bot_token: str
+    chat_id: str
+
+    model_config = SettingsConfigDict(
+        extra='ignore',
+        env_prefix='TELEGRAM_',
+        env_file='.env',
+        env_file_encoding='utf-8',
+    )
 
 
 class Telegram:
-    escape_pattern = re.compile(rf'([{re.escape(r'\_*[]()~`>#+-=|{}.!')}])')
+    escape_pattern = re.compile(rf'([{re.escape(r"\_*[]()~`>#+-=|{}.!")}])')
 
     def __init__(self) -> None:
         self._settings = TelegramSettings()

@@ -11,16 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup PDM
-        uses: pdm-project/setup-pdm@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.12
-          cache: true
-          cache-dependency-path: |
-            ./pdm.lock
+          python-version-file: "pyproject.toml"
 
       - name: Install dependencies
-        run: pdm sync
+        run: uv sync --frozen
 
       - name: Update emails
         env:

@@ -7,10 +7,24 @@ from email.header import decode_header
 from imapclient import IMAPClient
 from imapclient.response_types import Address, Envelope
 from loguru import logger
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from settings import ImapSettings
 from telegram import Telegram
 from templates import Render
+
+
+class ImapSettings(BaseSettings):
+    host: str
+    port: str
+    email: str
+    password: str
+
+    model_config = SettingsConfigDict(
+        extra='ignore',
+        env_prefix='IMAP_',
+        env_file='.env',
+        env_file_encoding='utf-8',
+    )
 
 
 def decode_subject(subject: bytes) -> str:
@@ -42,10 +56,15 @@ def check_folder(client: IMAPClient, folder: str):
         envelope: Envelope = data[b'ENVELOPE']
         email = {
             'subject': decode_subject(envelope.subject),
+            'date': envelope.date,
             'folder': folder,
             'from': ', '.join(decode_address(addr) for addr in envelope.from_),
             'to': ', '.join(decode_address(addr) for addr in envelope.to),
         }
+        if envelope.cc:
+            email['cc'] = ', '.join(decode_address(addr) for addr in envelope.cc)
+        if envelope.bcc:
+            email['bcc'] = ', '.join(decode_address(addr) for addr in envelope.bcc)
         emails.append(email)
 
     if not emails:
@@ -53,6 +72,7 @@ def check_folder(client: IMAPClient, folder: str):
 
     context = {
         'folder': folder,
+        'total': len(emails),
         'emails': emails,
     }
     render = Render()

@@ -1,7 +1,7 @@
 [project]
-name = "clean-architecture-boilerplate"
+name = "email-telegram-notifier"
 version = "0.1.0"
-description = "Just a simple boilerplate to create a new project"
+description = "Small utility helps you quickly know when have a new email."
 authors = [
     {name = "Khiem Doan", email = "doankhiem.crazy@gmail.com"},
 ]
@@ -12,16 +12,19 @@ license = {text = "GPL-3"}
 requires-python = ">=3.12"
 
 dependencies = [
-    "tzdata==2024.2",
-    "loguru==0.7.2",
-    "pydantic==2.10.2",
-    "pydantic-settings==2.6.1",
+    "tzdata==2025.1",
+    "pytz==2025.1",
+    "loguru==0.7.3",
+    "pydantic==2.10.6",
+    "pydantic-settings==2.7.1",
     "IMAPClient==3.0.1",
-    "Jinja2==3.1.4",
-    "httpx[http2]==0.28.0",
+    "Jinja2==3.1.5",
+    "httpx[http2]==0.28.1",
 ]
 
-[tool.pdm.dev-dependencies]
+[dependency-groups]
+tools = [
+]
 testing = [
     "pytest",
     "pytest-asyncio",
